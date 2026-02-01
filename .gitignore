@@ -39,6 +39,7 @@ bin/
 
 # VS Code
 .vscode/*
+!.vscode/java-formatter.xml
 !.vscode/settings.json
 
 # Mac OS
