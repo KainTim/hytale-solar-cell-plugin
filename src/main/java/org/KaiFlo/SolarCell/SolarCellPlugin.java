@@ -12,11 +12,11 @@ import javax.annotation.Nonnull;
  */
 
 @SuppressWarnings("unused")
-public class ExamplePlugin extends JavaPlugin {
+public class SolarCellPlugin extends JavaPlugin {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    public ExamplePlugin(@Nonnull JavaPluginInit init) {
+    public SolarCellPlugin(@Nonnull JavaPluginInit init) {
         super(init);
         LOGGER.atInfo().log("Hello from " + this.getName() + " version " + this.getManifest().getVersion().toString());
     }
