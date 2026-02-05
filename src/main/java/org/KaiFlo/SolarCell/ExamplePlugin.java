@@ -1,4 +1,4 @@
-package org.example.plugin;
+package org.KaiFlo.SolarCell;
 
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
@@ -10,6 +10,8 @@ import javax.annotation.Nonnull;
  * This class serves as the entrypoint for your plugin. Use the setup method to register into game registries or add
  * event listeners.
  */
+
+@SuppressWarnings("unused")
 public class ExamplePlugin extends JavaPlugin {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();

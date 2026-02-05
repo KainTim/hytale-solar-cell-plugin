@@ -1,14 +1,17 @@
 {
-    "Group": "Example",
-    "Name": "ExamplePlugin",
-    "Version": "0.0.2",
-    "Description": "An example plugin for HyTale!",
+    "Group": "KaiFlo",
+    "Name": "SolarCell",
+    "Version": "0.0.1",
+    "Description": "A Solar Cell Mod",
     "Authors": [
         {
-            "Name": "It's you!"
+            "Name": "Florian Greindl"
+        },
+        {
+            "Name": "Tim Kainz"
         }
     ],
-    "Website": "example.org",
+    "Website": "https://github.com/KainTim/hytale-solar-cell-plugin",
     "ServerVersion": "*",
     "Dependencies": {
         
@@ -17,6 +20,6 @@
         
     },
     "DisabledByDefault": false,
-    "Main": "org.example.plugin.ExamplePlugin",
+    "Main": "org.KaiFlo.SolarCell.SolarCellPlugin",
     "IncludesAssetPack": true
 }
