@@ -3,6 +3,8 @@ package org.KaiFlo.SolarCell;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import org.KaiFlo.SolarCell.Commands.ExampleCommand;
+import org.KaiFlo.SolarCell.Components.EnergySource.Implementations.SolarCellComponent;
 
 import javax.annotation.Nonnull;
 
@@ -25,5 +27,6 @@ public class SolarCellPlugin extends JavaPlugin {
     protected void setup() {
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
         this.getCommandRegistry().registerCommand(new ExampleCommand(this.getName(), this.getManifest().getVersion().toString()));
+        this.getChunkStoreRegistry().registerComponent(SolarCellComponent.class,"SolarCell",SolarCellComponent.CODEC);
     }
 } 
