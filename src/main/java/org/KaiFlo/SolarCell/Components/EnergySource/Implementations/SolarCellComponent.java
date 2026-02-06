@@ -2,9 +2,11 @@ package org.KaiFlo.SolarCell.Components.EnergySource.Implementations;
 
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Component;
+import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import org.KaiFlo.SolarCell.Components.EnergySource.AbstractEnergySource;
+import org.KaiFlo.SolarCell.SolarCellPlugin;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 public class SolarCellComponent extends AbstractEnergySource implements Component<ChunkStore> {
@@ -12,6 +14,10 @@ public class SolarCellComponent extends AbstractEnergySource implements Componen
 
     private final HytaleLogger Logger = HytaleLogger.getLogger();
     private long energyRatePerTick = 5;
+
+    public static ComponentType<ChunkStore, SolarCellComponent> getComponentType() {
+        return SolarCellPlugin.get().getSolarCellComponentType();
+    }
 
     private SolarCellComponent copyFrom(SolarCellComponent other) {
         this.energyRatePerTick = other.energyRatePerTick;
