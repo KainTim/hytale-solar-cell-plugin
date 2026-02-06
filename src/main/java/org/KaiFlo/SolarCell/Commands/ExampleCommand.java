@@ -13,7 +13,7 @@ import com.hypixel.hytale.server.core.modules.entity.component.TransformComponen
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import it.unimi.dsi.fastutil.longs.LongSet;
+import org.KaiFlo.SolarCell.Helpers.BlockHelper;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public class ExampleCommand extends CommandBase {
             Vector3i playerPosition = Objects.requireNonNull(playerTransform).getPosition().toVector3i();
             var size = sizeArg.get(ctx);
             if (size == null) size = 5;
-            executeForCubeAround(playerPosition.x, playerPosition.y, playerPosition.z, size, (x, y, z) -> {
+            BlockHelper.executeForCubeAround(playerPosition.x, playerPosition.y, playerPosition.z, size, (x, y, z) -> {
 //                BlockType blockType = defaultWorld.getBlockType(x, y, z);
 //                if (blockType != null) {
 //                    LOGGER.atInfo().log(blockType.getId() + " at " + x + "," + y + "," + z);
@@ -63,17 +63,4 @@ public class ExampleCommand extends CommandBase {
         });
     }
 
-    void executeForCubeAround(int x, int y, int z, int size, Callback callback) {
-        for (int x1 = x - size / 2; x1 < x + size / 2; x1++) {
-            for (int y1 = y - size / 2; y1 < y + size / 2; y1++) {
-                for (int z1 = z - size / 2; z1 < z + size / 2; z1++) {
-                    callback.onBlockPosition(x1, y1, z1);
-                }
-            }
-        }
-    }
-}
-
-interface Callback {
-    void onBlockPosition(int x, int y, int z);
 }

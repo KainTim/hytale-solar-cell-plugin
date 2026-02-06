@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import org.KaiFlo.SolarCell.Commands.ExampleCommand;
 import org.KaiFlo.SolarCell.Components.EnergySource.Implementations.SolarCellComponent;
 import org.KaiFlo.SolarCell.Systems.EnergySource.SolarCellInitializer;
+import org.KaiFlo.SolarCell.Systems.EnergySource.SolarCellTickingSystem;
 
 import javax.annotation.Nonnull;
 
@@ -38,6 +39,7 @@ public class SolarCellPlugin extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new ExampleCommand(this.getName(), this.getManifest().getVersion().toString()));
 
         this.getChunkStoreRegistry().registerSystem(new SolarCellInitializer());
+        this.getChunkStoreRegistry().registerSystem(new SolarCellTickingSystem());
 
     }
 
