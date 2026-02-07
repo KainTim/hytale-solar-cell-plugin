@@ -6,11 +6,12 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.validation.Validators;
 import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
-import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import org.KaiFlo.SolarCell.Components.EnergySource.IEnergySource;
 import org.KaiFlo.SolarCell.SolarCellPlugin;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+
+import static org.KaiFlo.SolarCell.Helpers.BlockHelper.LOGGER;
 
 public class EnergySourceComponent implements Component<ChunkStore>, IEnergySource {
     @SuppressWarnings("unchecked")
@@ -31,7 +32,6 @@ public class EnergySourceComponent implements Component<ChunkStore>, IEnergySour
             .add()
             .build();
 
-    private final HytaleLogger Logger = HytaleLogger.getLogger();
     private long generatesPerTick = 5;
     private boolean isEndless = true;
     private long energyCapacity = -1;
@@ -51,7 +51,7 @@ public class EnergySourceComponent implements Component<ChunkStore>, IEnergySour
         try {
             super.clone();
         } catch (CloneNotSupportedException e) {
-            Logger.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
+            LOGGER.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
         }
         return new EnergySourceComponent().copyFrom(this);
     }
