@@ -45,7 +45,13 @@
     "BlockBreakingDecalId": "Breaking_Decals_Rock",
     "BlockEntity": {
       "Components": {
-        "SolarCell": {}
+        "SolarCell": {},
+        "EnergyStorageComponent": {
+          "EnergyStored": 5,
+          "MaxEnergy": 80000,
+          "MaxReceive": 1000,
+          "MaxExtract": 1000
+        }
       }
     }
   },

@@ -45,7 +45,7 @@ public class ExampleCommand extends CommandBase {
             Vector3i playerPosition = Objects.requireNonNull(playerTransform).getPosition().toVector3i();
             var size = sizeArg.get(ctx);
             if (size == null) size = 5;
-            BlockHelper.executeForCubeAround(playerPosition.x, playerPosition.y, playerPosition.z, size, (x, y, z) -> {
+            BlockHelper.executeForCubeAround(playerPosition.x, playerPosition.y, playerPosition.z, size,true, (x, y, z) -> {
 //                BlockType blockType = defaultWorld.getBlockType(x, y, z);
 //                if (blockType != null) {
 //                    LOGGER.atInfo().log(blockType.getId() + " at " + x + "," + y + "," + z);
