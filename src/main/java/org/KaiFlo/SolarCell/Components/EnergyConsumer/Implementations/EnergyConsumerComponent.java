@@ -6,11 +6,12 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.validation.Validators;
 import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
-import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import org.KaiFlo.SolarCell.Components.EnergyConsumer.IEnergyConsumer;
 import org.KaiFlo.SolarCell.SolarCellPlugin;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+
+import static org.KaiFlo.SolarCell.Helpers.BlockHelper.LOGGER;
 
 public class EnergyConsumerComponent implements Component<ChunkStore>, IEnergyConsumer {
     public static final BuilderCodec<EnergyConsumerComponent> CODEC = BuilderCodec.builder(EnergyConsumerComponent.class, EnergyConsumerComponent::new)
@@ -25,8 +26,6 @@ public class EnergyConsumerComponent implements Component<ChunkStore>, IEnergyCo
 
     private long consumptionPerTick;
     private float workingCapabilityRatio;
-
-    private final HytaleLogger Logger = HytaleLogger.getLogger();
 
     @Override
     public float getWorkingCapabilityRatio() {
@@ -60,7 +59,7 @@ public class EnergyConsumerComponent implements Component<ChunkStore>, IEnergyCo
         try {
             super.clone();
         } catch (CloneNotSupportedException e) {
-            Logger.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
+            LOGGER.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
         }
         return new EnergyConsumerComponent().copyFrom(this);
     }

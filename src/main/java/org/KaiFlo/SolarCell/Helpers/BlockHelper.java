@@ -10,6 +10,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class BlockHelper {
+    public static final HytaleLogger LOGGER = HytaleLogger.getLogger();
 
     public static void executeForCubeAround(int x, int y, int z, int size, boolean own, Callback callback) {
         for (int xOffset = 0; xOffset < size; xOffset++) {

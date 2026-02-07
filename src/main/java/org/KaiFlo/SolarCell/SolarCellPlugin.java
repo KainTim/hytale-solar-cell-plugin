@@ -10,7 +10,7 @@ import org.KaiFlo.SolarCell.Components.EnergyConsumer.Implementations.EnergyCons
 import org.KaiFlo.SolarCell.Components.EnergySource.Implementations.EnergySourceComponent;
 import org.KaiFlo.SolarCell.Components.EnergyStorage.Implementations.EnergyStorageComponent;
 import org.KaiFlo.SolarCell.Systems.EnergySource.EnergySourceInitializerSystem;
-import org.KaiFlo.SolarCell.Systems.EnergySource.EnergyProducerTickingSystem;
+import org.KaiFlo.SolarCell.Systems.EnergyTickingSystem;
 
 import javax.annotation.Nonnull;
 
@@ -45,7 +45,7 @@ public class SolarCellPlugin extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new ExampleCommand(this.getName(), this.getManifest().getVersion().toString()));
 
         this.getChunkStoreRegistry().registerSystem(new EnergySourceInitializerSystem());
-        this.getChunkStoreRegistry().registerSystem(new EnergyProducerTickingSystem());
+        this.getChunkStoreRegistry().registerSystem(new EnergyTickingSystem());
 
     }
 
