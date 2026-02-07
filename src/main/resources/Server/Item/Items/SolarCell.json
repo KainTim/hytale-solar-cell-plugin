@@ -1,48 +1,21 @@
 {
   "TranslationProperties": {
-    "Name": "server.items.Rock_Stone.name"
+    "Name": "SolarCell Tier 1"
   },
-  "ItemLevel": 10,
-  "MaxStack": 100,
-  "Icon": "Icons/ItemsGenerated/Rock_Stone_Stalactite_Small.png",
-  "Categories": [
-    "Blocks.Rocks"
-  ],
-  "PlayerAnimationsId": "Block",
-  "Set": "Rock_Stone",
+  "Icon": "Icons/Items/EditorTools/Layers.png",
+  "IconProperties": {
+    "Scale": 0.36,
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ],
+    "Translation": [
+      12.6,
+      -24.6
+    ]
+  },
   "BlockType": {
-    "Material": "Solid",
-    "DrawType": "Cube",
-    "Group": "Stone",
-    "Flags": {},
-    "Gathering": {
-      "Breaking": {
-        "GatherType": "Rocks",
-        "ItemId": "Rock_Stone_Cobble"
-      }
-    },
-    "BlockParticleSetId": "Stone",
-    "Textures": [
-      {
-        "All": "BlockTextures/Rock_Stone.png",
-        "Weight": 2
-      },
-      {
-        "All": "BlockTextures/Rock_Stone_2.png",
-        "Weight": 1
-      },
-      {
-        "All": "BlockTextures/Rock_Stone_3.png",
-        "Weight": 1
-      }
-    ],
-    "ParticleColor": "#737055",
-    "BlockSoundSetId": "Stone",
-    "Aliases": [
-      "stone",
-      "stone00"
-    ],
-    "BlockBreakingDecalId": "Breaking_Decals_Rock",
     "BlockEntity": {
       "Components": {
         "SolarCell": {},
@@ -53,20 +26,55 @@
           "MaxExtract": 1000
         }
       }
-    }
+    },
+    "CustomModel": "Items/SolarPanels/SolarCell1.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Items/SolarPanels/SolarCell1.png",
+        "Weight": 1
+      }
+    ],
+    "DrawType": "Model",
+    "Material": "Solid",
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Woods"
+      }
+    },
+    "Support": {
+      "Down": [
+        {
+          "FaceType": "Full"
+        }
+      ]
+    },
+    "Interactions": {
+      "Primary": "Break_Container"
+    },
+    "State": {},
+    "BlockSoundSetId": "Wood",
+    "BlockParticleSetId": "Wood",
+    "VariantRotation": "NESW",
+    "ParticleColor": "#3e352a"
   },
+  "Scale": 1,
   "ResourceTypes": [
     {
-      "Id": "Rock"
+      "Id": "Fuel"
     },
     {
-      "Id": "Rock_Stone"
+      "Id": "Charcoal"
     }
   ],
   "Tags": {
     "Type": [
-      "Rock"
+      "Furniture"
+    ],
+    "Family": [
+      "Human"
     ]
   },
-  "ItemSoundSetId": "ISS_Blocks_Stone"
+  "Set": "Wardrobe",
+  "PlayerAnimationsId": "Block",
+  "ItemSoundSetId": "ISS_Blocks_Wood"
 }
