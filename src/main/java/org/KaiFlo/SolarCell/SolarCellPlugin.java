@@ -6,7 +6,9 @@ import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import org.KaiFlo.SolarCell.Commands.ExampleCommand;
+import org.KaiFlo.SolarCell.Components.EnergyConsumer.Implementations.EnergyConsumerComponent;
 import org.KaiFlo.SolarCell.Components.EnergySource.Implementations.EnergySourceComponent;
+import org.KaiFlo.SolarCell.Components.EnergyStorage.Implementations.EnergyStorageComponent;
 import org.KaiFlo.SolarCell.Systems.EnergySource.EnergySourceInitializerSystem;
 import org.KaiFlo.SolarCell.Systems.EnergySource.EnergyProducerTickingSystem;
 
@@ -22,7 +24,9 @@ public class SolarCellPlugin extends JavaPlugin {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    private ComponentType<ChunkStore, EnergySourceComponent> solarCellComponentType;
+    private ComponentType<ChunkStore, EnergySourceComponent> energySourceComponentType;
+    private ComponentType<ChunkStore, EnergyConsumerComponent> energyConsumerComponentType;
+    private ComponentType<ChunkStore, EnergyStorageComponent> energyStorageComponentType;
 
     public SolarCellPlugin(@Nonnull JavaPluginInit init) {
         super(init);
@@ -34,7 +38,9 @@ public class SolarCellPlugin extends JavaPlugin {
         instance = this;
         LOGGER.atInfo().log("Setting up plugin " + this.getName());
 
-        solarCellComponentType = this.getChunkStoreRegistry().registerComponent(EnergySourceComponent.class, "SolarCell", EnergySourceComponent.CODEC);
+        energySourceComponentType = this.getChunkStoreRegistry().registerComponent(EnergySourceComponent.class, "EnergySource", EnergySourceComponent.CODEC);
+        energyConsumerComponentType = this.getChunkStoreRegistry().registerComponent(EnergyConsumerComponent.class, "EnergyConsumer", EnergyConsumerComponent.CODEC);
+        energyStorageComponentType = this.getChunkStoreRegistry().registerComponent(EnergyStorageComponent.class, "EnergyStorage", EnergyStorageComponent.CODEC);
 
         this.getCommandRegistry().registerCommand(new ExampleCommand(this.getName(), this.getManifest().getVersion().toString()));
 
@@ -43,7 +49,15 @@ public class SolarCellPlugin extends JavaPlugin {
 
     }
 
-    public ComponentType<ChunkStore, EnergySourceComponent> getSolarCellComponentType() {
-        return solarCellComponentType;
+    public ComponentType<ChunkStore, EnergySourceComponent> getEnergySourceComponentType() {
+        return energySourceComponentType;
+    }
+
+    public ComponentType<ChunkStore, EnergyConsumerComponent> getEnergyConsumerComponentType() {
+        return energyConsumerComponentType;
+    }
+
+    public ComponentType<ChunkStore, EnergyStorageComponent> getEnergyStorageComponentType() {
+        return energyStorageComponentType;
     }
 } 

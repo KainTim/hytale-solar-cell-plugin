@@ -15,5 +15,11 @@ public interface IEnergySource {
     /**
      * @return The amount of energy the source produces per Tick
      */
-    long getEnergyRatePerTick();
+    long getGeneratesPerTick();
+
+    void setGeneratesPerTick(long generatesPerTick);
+
+    void setEndless(boolean endless);
+
+    void setEnergyCapacity(long energyCapacity);
 }

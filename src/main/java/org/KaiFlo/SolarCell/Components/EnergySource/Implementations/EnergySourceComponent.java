@@ -1,26 +1,47 @@
 package org.KaiFlo.SolarCell.Components.EnergySource.Implementations;
 
+import com.hypixel.hytale.codec.Codec;
+import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
+import com.hypixel.hytale.codec.validation.Validators;
 import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
-import org.KaiFlo.SolarCell.Components.EnergySource.AbstractEnergySource;
+import org.KaiFlo.SolarCell.Components.EnergySource.IEnergySource;
 import org.KaiFlo.SolarCell.SolarCellPlugin;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-public class EnergySourceComponent extends AbstractEnergySource implements Component<ChunkStore> {
-    public static final BuilderCodec<EnergySourceComponent> CODEC = BuilderCodec.builder(EnergySourceComponent.class, EnergySourceComponent::new).build();
+public class EnergySourceComponent implements Component<ChunkStore>, IEnergySource {
+    @SuppressWarnings("unchecked")
+    public static final BuilderCodec<EnergySourceComponent> CODEC = BuilderCodec.builder(EnergySourceComponent.class, EnergySourceComponent::new)
+            .append(new KeyedCodec<>("GeneratesPerTick", Codec.LONG),
+                    (component, value) -> component.generatesPerTick = value,
+                    (component) -> component.generatesPerTick
+            )
+            .addValidator(Validators.greaterThanOrEqual(0L))
+            .documentation("GeneratesPerTick defines the Sources GeneratesPerTick")
+            .add()
+            .append(new KeyedCodec<>("EnergyCapacity", Codec.LONG),
+                    (component, value) -> component.energyCapacity = value,
+                    (component) -> component.energyCapacity
+            )
+            .addValidator(Validators.or(Validators.equal(-1L), Validators.greaterThanOrEqual(0L)))
+            .documentation("EnergyCapacity defines how long energy can be produced (Set to -1 if endless energy production)")
+            .add()
+            .build();
 
     private final HytaleLogger Logger = HytaleLogger.getLogger();
-    private long energyRatePerTick = 5;
+    private long generatesPerTick = 5;
+    private boolean isEndless = true;
+    private long energyCapacity = -1;
 
     public static ComponentType<ChunkStore, EnergySourceComponent> getComponentType() {
-        return SolarCellPlugin.get().getSolarCellComponentType();
+        return SolarCellPlugin.get().getEnergySourceComponentType();
     }
 
     private EnergySourceComponent copyFrom(EnergySourceComponent other) {
-        this.energyRatePerTick = other.energyRatePerTick;
+        this.generatesPerTick = other.generatesPerTick;
         return this;
     }
 
@@ -36,11 +57,32 @@ public class EnergySourceComponent extends AbstractEnergySource implements Compo
     }
 
     @Override
-    public long getEnergyRatePerTick() {
-        return energyRatePerTick;
+    public boolean isEndless() {
+        return isEndless;
     }
 
-    public void setEnergyRatePerTick(long energyRatePerTick) {
-        this.energyRatePerTick = energyRatePerTick;
+    @Override
+    public void setEndless(boolean endless) {
+        isEndless = endless;
+    }
+
+    @Override
+    public long getEnergyCapacity() {
+        return energyCapacity;
+    }
+
+    @Override
+    public void setEnergyCapacity(long energyCapacity) {
+        this.energyCapacity = energyCapacity;
+    }
+
+    @Override
+    public long getGeneratesPerTick() {
+        return generatesPerTick;
+    }
+
+    @Override
+    public void setGeneratesPerTick(long generatesPerTick) {
+        this.generatesPerTick = generatesPerTick;
     }
 }

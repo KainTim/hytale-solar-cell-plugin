@@ -54,7 +54,7 @@ public class EnergyProducerTickingSystem extends EntityTickingSystem<ChunkStore>
                         var targetEnergyStorage = commandBuffer.getComponent(targetRef, EnergyStorageBlockComponent.getComponentType());
                         if (targetEnergySource == null || targetEnergyStorage == null) return;
 
-                        var energy = targetEnergyStorage.extractEnergy(targetEnergySource.getEnergyRatePerTick(), false);
+                        var energy = targetEnergyStorage.extractEnergy(targetEnergySource.getGeneratesPerTick(), false);
                         var inserted = thisEnergyStorageComponent.receiveEnergy(energy, false);
                         LOGGER.atInfo().log("Inserted " + inserted + "/" + energy + " |" + targetEnergyStorage.getEnergyStored() + "| into storage" +
                                 " at Block " + globalX + ", " + localY + ", " + globalZ + ", " +
