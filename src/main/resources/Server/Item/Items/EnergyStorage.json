@@ -1,0 +1,71 @@
+{
+  "TranslationProperties": {
+    "Name": "EnergyStorage Tier 1"
+  },
+  "Icon": "Icons/Items/EditorTools/Layers.png",
+  "IconProperties": {
+    "Scale": 0.36,
+    "Rotation": [
+      22.5,
+      45,
+      22.5
+    ],
+    "Translation": [
+      12.6,
+      -24.6
+    ]
+  },
+  "BlockType": {
+    "BlockEntity": {
+      "Components": {
+        "EnergyStorageComponent": {
+          "EnergyStored": 5,
+          "MaxEnergy": 80000,
+          "MaxReceive": 1000,
+          "MaxExtract": 1000
+        }
+      }
+    },
+    "CustomModel": "Items/EnergyStorages/EnergyStorage1.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Items/EnergyStorages/texture.png",
+        "Weight": 1
+      }
+    ],
+    "DrawType": "Model",
+    "Material": "Solid",
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Woods"
+      }
+    },
+    "Interactions": {
+      "Primary": "Break_Container"
+    },
+    "BlockSoundSetId": "Wood",
+    "BlockParticleSetId": "Wood",
+    "VariantRotation": "NESW",
+    "ParticleColor": "#3e352a"
+  },
+  "Scale": 1,
+  "ResourceTypes": [
+    {
+      "Id": "Fuel"
+    },
+    {
+      "Id": "Charcoal"
+    }
+  ],
+  "Tags": {
+    "Type": [
+      "Furniture"
+    ],
+    "Family": [
+      "Human"
+    ]
+  },
+  "Set": "Wardrobe",
+  "PlayerAnimationsId": "Block",
+  "ItemSoundSetId": "ISS_Blocks_Wood"
+}
