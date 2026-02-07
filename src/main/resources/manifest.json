@@ -14,7 +14,8 @@
     "Website": "https://github.com/KainTim/hytale-solar-cell-plugin",
     "ServerVersion": "*",
     "Dependencies": {
-        
+        "Hytale:EntityModule": "*",
+        "Hytale:BlockModule": "*"
     },
     "OptionalDependencies": {
         
