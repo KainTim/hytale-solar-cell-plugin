@@ -41,7 +41,13 @@
       }
     },
     "Interactions": {
-      "Primary": "Break_Container"
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "StorageUseInteraction"
+          }
+        ]
+      }
     },
     "BlockSoundSetId": "Wood",
     "BlockParticleSetId": "Wood",

@@ -2,6 +2,7 @@ package org.KaiFlo.SolarCell;
 
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
@@ -55,6 +56,8 @@ public class SolarCellPlugin extends JavaPlugin {
         this.getChunkStoreRegistry().registerSystem(new EnergySourceInitializerSystem());
         this.getChunkStoreRegistry().registerSystem(new EnergyStorageInitializerSystem());
         this.getChunkStoreRegistry().registerSystem(energyTickingSystem);
+
+        this.getCodecRegistry(Interaction.CODEC).register("StorageUseInteraction", StorageIntercationListener.class, StorageIntercationListener.CODEC);
 
     }
 

@@ -19,14 +19,14 @@
     "BlockEntity": {
       "Components": {
         "EnergyStorage": {
-          "MaxCapacity": 10000,
+          "MaxCapacity": 1000,
           "ExtractEnergyPerTick": 100,
           "ReceiveEnergyPerTick": 1000,
           "CurrentEnergyAmount": 0
         },
         "EnergySource": {
           "EnergyCapacity": -1,
-          "GeneratesPerTick": 100
+          "GeneratesPerTick": 1
         }
       }
     },
@@ -51,14 +51,20 @@
         }
       ]
     },
-    "Interactions": {
-      "Primary": "Break_Container"
-    },
     "State": {},
     "BlockSoundSetId": "Wood",
     "BlockParticleSetId": "Wood",
     "VariantRotation": "NESW",
-    "ParticleColor": "#3e352a"
+    "ParticleColor": "#3e352a",
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "StorageUseInteraction"
+          }
+        ]
+      }
+    }
   },
   "Scale": 1,
   "ResourceTypes": [
