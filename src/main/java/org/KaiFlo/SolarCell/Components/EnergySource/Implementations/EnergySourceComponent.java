@@ -32,7 +32,6 @@ public class EnergySourceComponent implements Component<ChunkStore>, IEnergySour
             .build();
 
     private long generatesPerTick = 5;
-    private boolean isEndless = true;
     private long energyCapacity = -1;
 
     public static ComponentType<ChunkStore, EnergySourceComponent> getComponentType() {
@@ -57,12 +56,7 @@ public class EnergySourceComponent implements Component<ChunkStore>, IEnergySour
 
     @Override
     public boolean isEndless() {
-        return isEndless;
-    }
-
-    @Override
-    public void setEndless(boolean endless) {
-        isEndless = endless;
+        return energyCapacity == -1;
     }
 
     @Override

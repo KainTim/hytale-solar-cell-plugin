@@ -19,7 +19,5 @@ public interface IEnergySource {
 
     void setGeneratesPerTick(long generatesPerTick);
 
-    void setEndless(boolean endless);
-
     void setEnergyCapacity(long energyCapacity);
 }
