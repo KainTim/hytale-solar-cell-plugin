@@ -102,12 +102,12 @@ public class EnergyStorageComponent implements Component<ChunkStore>, IEnergySto
     public long extractEnergy(long requiredEnergy) {
         var extractedEnergy = Math.min(currentEnergyAmount, Math.min(requiredEnergy, extractEnergyPerTick));
         currentEnergyAmount -= extractedEnergy;
-        if (extractedEnergy >=1000){
-            HyLogger.atInfo().log("Extracted Energy: " + extractedEnergy + " now at " + currentEnergyAmount);
-            for (StackTraceElement element : Arrays.stream(Thread.currentThread().getStackTrace()).limit(7).toList()) {
-                HyLogger.atInfo().log(String.valueOf(element));
-            }
-        }
+//        if (extractedEnergy >=1000){
+//            HyLogger.atInfo().log("Extracted Energy: " + extractedEnergy + " now at " + currentEnergyAmount);
+//            for (StackTraceElement element : Arrays.stream(Thread.currentThread().getStackTrace()).limit(7).toList()) {
+//                HyLogger.atInfo().log(String.valueOf(element));
+//            }
+//        }
         return extractedEnergy;
     }
 
