@@ -11,6 +11,8 @@ import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
+import java.util.*;
+
 public class BlockHelper {
     public static final HytaleLogger HyLogger = HytaleLogger.getLogger();
 
@@ -40,6 +42,7 @@ public class BlockHelper {
         ChunkSafeCallback chunkSafeCallback
         ) {
         int halfSize = size / 2;
+        Map<Long, List<BlockPos>> positionsByChunk = new HashMap<>();
 
         for (int xOffset = -halfSize; xOffset <= halfSize; xOffset++) {
             for (int yOffset = -halfSize; yOffset <= halfSize; yOffset++) {
@@ -55,28 +58,52 @@ public class BlockHelper {
 
                     int chunkX = Math.floorDiv(xPos, 32);
                     int chunkZ = Math.floorDiv(zPos, 32);
+                    long chunkIndex = ChunkUtil.indexChunk(chunkX, chunkZ);
 
                     int localX = Math.floorMod(xPos, 32);
                     int localZ = Math.floorMod(zPos, 32);
 
-                    WorldChunk targetChunk = world.getChunk(ChunkUtil.indexChunk(chunkX, chunkZ));
-                    if (targetChunk == null) continue;
-
-                    var blockComponentChunk = commandBuffer.getComponent(
-                        targetChunk.getReference(),
-                        BlockComponentChunk.getComponentType()
-                    );
-                    if (blockComponentChunk == null) continue;
-
-                    int index = ChunkUtil.indexBlockInColumn(localX, yPos, localZ);
-                    var targetRef = blockComponentChunk.getEntityReference(index);
-                    if (targetRef == null) continue;
-
-                    chunkSafeCallback.accept(xPos, yPos, zPos, targetRef, blockComponentChunk, targetChunk);
+                    positionsByChunk
+                        .computeIfAbsent(chunkIndex, _ -> new ArrayList<>())
+                        .add(new BlockPos(xPos, yPos, zPos, localX, localZ));
                 }
             }
         }
+        world.execute(() -> {
+            for (var entry : positionsByChunk.entrySet()) {
+                long chunkIndex = entry.getKey();
+                List<BlockPos> blockPositions = entry.getValue();
+
+                WorldChunk chunk = world.getChunkIfLoaded(chunkIndex);
+                if (chunk == null) continue;
+
+                var blockComponentChunk = commandBuffer.getComponent(
+                    chunk.getReference(),
+                    BlockComponentChunk.getComponentType()
+                );
+                if (blockComponentChunk == null) continue;
+
+                for (BlockPos pos : blockPositions) {
+                    int index = ChunkUtil.indexBlockInColumn(
+                        pos.localX(), pos.y(), pos.localZ()
+                    );
+
+                    var targetRef = blockComponentChunk.getEntityReference(index);
+                    if (targetRef == null) continue;
+
+                    chunkSafeCallback.accept(
+                        pos.x(), pos.y(), pos.z(),
+                        targetRef,
+                        blockComponentChunk,
+                        chunk
+                    );
+                }
+            }
+        });
+
+
     }
+    record BlockPos(int x, int y, int z, int localX, int localZ) {}
     public interface Callback {
         void accept(int x, int y, int z);
     }
