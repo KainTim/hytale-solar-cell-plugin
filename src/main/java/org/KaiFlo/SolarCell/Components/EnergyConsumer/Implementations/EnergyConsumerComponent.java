@@ -11,7 +11,7 @@ import org.KaiFlo.SolarCell.Components.EnergyConsumer.IEnergyConsumer;
 import org.KaiFlo.SolarCell.SolarCellPlugin;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import static org.KaiFlo.SolarCell.Helpers.BlockHelper.LOGGER;
+import static org.KaiFlo.SolarCell.Helpers.BlockHelper.HyLogger;
 
 public class EnergyConsumerComponent implements Component<ChunkStore>, IEnergyConsumer {
     public static final BuilderCodec<EnergyConsumerComponent> CODEC = BuilderCodec.builder(EnergyConsumerComponent.class, EnergyConsumerComponent::new)
@@ -59,7 +59,7 @@ public class EnergyConsumerComponent implements Component<ChunkStore>, IEnergyCo
         try {
             super.clone();
         } catch (CloneNotSupportedException e) {
-            LOGGER.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
+            HyLogger.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
         }
         return new EnergyConsumerComponent().copyFrom(this);
     }

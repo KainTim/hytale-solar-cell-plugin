@@ -18,11 +18,11 @@
   "BlockType": {
     "BlockEntity": {
       "Components": {
-        "EnergyStorageComponent": {
-          "EnergyStored": 5,
-          "MaxEnergy": 80000,
-          "MaxReceive": 1000,
-          "MaxExtract": 1000
+        "EnergyStorage": {
+          "MaxCapacity": 10000,
+          "ExtractEnergyPerTick": 1000,
+          "ReceiveEnergyPerTick": 1000,
+          "CurrentEnergyAmount": 100
         }
       }
     },

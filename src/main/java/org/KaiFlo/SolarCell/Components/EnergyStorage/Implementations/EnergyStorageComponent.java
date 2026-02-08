@@ -11,7 +11,9 @@ import org.KaiFlo.SolarCell.Components.EnergyStorage.IEnergyStorage;
 import org.KaiFlo.SolarCell.SolarCellPlugin;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import static org.KaiFlo.SolarCell.Helpers.BlockHelper.LOGGER;
+import java.util.Arrays;
+
+import static org.KaiFlo.SolarCell.Helpers.BlockHelper.HyLogger;
 
 public class EnergyStorageComponent implements Component<ChunkStore>, IEnergyStorage {
     public static final BuilderCodec<EnergyStorageComponent> CODEC = BuilderCodec.builder(EnergyStorageComponent.class, EnergyStorageComponent::new)
@@ -100,6 +102,12 @@ public class EnergyStorageComponent implements Component<ChunkStore>, IEnergySto
     public long extractEnergy(long requiredEnergy) {
         var extractedEnergy = Math.min(currentEnergyAmount, Math.min(requiredEnergy, extractEnergyPerTick));
         currentEnergyAmount -= extractedEnergy;
+        if (extractedEnergy >=1000){
+            HyLogger.atInfo().log("Extracted Energy: " + extractedEnergy + " now at " + currentEnergyAmount);
+            for (StackTraceElement element : Arrays.stream(Thread.currentThread().getStackTrace()).limit(7).toList()) {
+                HyLogger.atInfo().log(String.valueOf(element));
+            }
+        }
         return extractedEnergy;
     }
 
@@ -107,6 +115,7 @@ public class EnergyStorageComponent implements Component<ChunkStore>, IEnergySto
     public long receiveEnergy(long inputEnergy) {
         var receivedEnergy = Math.min(maxCapacity - currentEnergyAmount, Math.min(inputEnergy, receiveEnergyPerTick));
         currentEnergyAmount += receivedEnergy;
+//        HyLogger.atInfo().log("Received Energy: " + receivedEnergy + " now at " + currentEnergyAmount);
         return receivedEnergy;
     }
 
@@ -124,7 +133,7 @@ public class EnergyStorageComponent implements Component<ChunkStore>, IEnergySto
         try {
             super.clone();
         } catch (CloneNotSupportedException e) {
-            LOGGER.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
+            HyLogger.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
         }
         return new EnergyStorageComponent().copyFrom(this);
     }

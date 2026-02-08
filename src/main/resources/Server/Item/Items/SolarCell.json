@@ -18,12 +18,15 @@
   "BlockType": {
     "BlockEntity": {
       "Components": {
-        "SolarCell": {},
-        "EnergyStorageComponent": {
-          "EnergyStored": 5,
-          "MaxEnergy": 80000,
-          "MaxReceive": 1000,
-          "MaxExtract": 1000
+        "EnergyStorage": {
+          "MaxCapacity": 10000,
+          "ExtractEnergyPerTick": 100,
+          "ReceiveEnergyPerTick": 1000,
+          "CurrentEnergyAmount": 0
+        },
+        "EnergySource": {
+          "EnergyCapacity": -1,
+          "GeneratesPerTick": 1000
         }
       }
     },

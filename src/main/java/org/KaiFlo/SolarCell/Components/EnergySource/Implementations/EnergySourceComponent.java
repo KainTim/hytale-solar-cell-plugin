@@ -11,10 +11,9 @@ import org.KaiFlo.SolarCell.Components.EnergySource.IEnergySource;
 import org.KaiFlo.SolarCell.SolarCellPlugin;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import static org.KaiFlo.SolarCell.Helpers.BlockHelper.LOGGER;
+import static org.KaiFlo.SolarCell.Helpers.BlockHelper.HyLogger;
 
 public class EnergySourceComponent implements Component<ChunkStore>, IEnergySource {
-    @SuppressWarnings("unchecked")
     public static final BuilderCodec<EnergySourceComponent> CODEC = BuilderCodec.builder(EnergySourceComponent.class, EnergySourceComponent::new)
             .append(new KeyedCodec<>("GeneratesPerTick", Codec.LONG),
                     (component, value) -> component.generatesPerTick = value,
@@ -27,7 +26,7 @@ public class EnergySourceComponent implements Component<ChunkStore>, IEnergySour
                     (component, value) -> component.energyCapacity = value,
                     (component) -> component.energyCapacity
             )
-            .addValidator(Validators.or(Validators.equal(-1L), Validators.greaterThanOrEqual(0L)))
+            .addValidator(Validators.greaterThanOrEqual(-1L))
             .documentation("EnergyCapacity defines how long energy can be produced (Set to -1 if endless energy production)")
             .add()
             .build();
@@ -51,7 +50,7 @@ public class EnergySourceComponent implements Component<ChunkStore>, IEnergySour
         try {
             super.clone();
         } catch (CloneNotSupportedException e) {
-            LOGGER.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
+            HyLogger.atWarning().log("Cloning of " + this.getClass().getName() + " failed.");
         }
         return new EnergySourceComponent().copyFrom(this);
     }

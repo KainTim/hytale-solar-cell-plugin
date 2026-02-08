@@ -10,9 +10,13 @@ import org.KaiFlo.SolarCell.Components.EnergyConsumer.Implementations.EnergyCons
 import org.KaiFlo.SolarCell.Components.EnergySource.Implementations.EnergySourceComponent;
 import org.KaiFlo.SolarCell.Components.EnergyStorage.Implementations.EnergyStorageComponent;
 import org.KaiFlo.SolarCell.Systems.EnergySource.EnergySourceInitializerSystem;
+import org.KaiFlo.SolarCell.Systems.EnergySource.TickingImplementations.SolarCellSourceTicking;
+import org.KaiFlo.SolarCell.Systems.EnergyStorage.EnergyStorageInitializerSystem;
+import org.KaiFlo.SolarCell.Systems.EnergyStorage.TickingImplementations.BatteryStorageTicking;
 import org.KaiFlo.SolarCell.Systems.EnergyTickingSystem;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class SolarCellPlugin extends JavaPlugin {
 
@@ -44,8 +48,13 @@ public class SolarCellPlugin extends JavaPlugin {
 
         this.getCommandRegistry().registerCommand(new ExampleCommand(this.getName(), this.getManifest().getVersion().toString()));
 
+        var energyTickingSystem = new EnergyTickingSystem()
+                .withTickingSystemForComponentTypes(List.of(energyStorageComponentType), new BatteryStorageTicking())
+                .withTickingSystemForComponentTypes(List.of(energySourceComponentType,energyStorageComponentType), new SolarCellSourceTicking());
+
         this.getChunkStoreRegistry().registerSystem(new EnergySourceInitializerSystem());
-        this.getChunkStoreRegistry().registerSystem(new EnergyTickingSystem());
+        this.getChunkStoreRegistry().registerSystem(new EnergyStorageInitializerSystem());
+        this.getChunkStoreRegistry().registerSystem(energyTickingSystem);
 
     }
 
