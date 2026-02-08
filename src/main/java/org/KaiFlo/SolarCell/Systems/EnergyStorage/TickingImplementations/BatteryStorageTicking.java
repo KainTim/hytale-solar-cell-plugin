@@ -13,7 +13,6 @@ import org.KaiFlo.SolarCell.Components.EnergyStorage.Implementations.EnergyStora
 import org.KaiFlo.SolarCell.Systems.ITickingSystem;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.KaiFlo.SolarCell.Helpers.BlockHelper.HyLogger;
 import static org.KaiFlo.SolarCell.Helpers.BlockHelper.executeForCubeAroundChunkSafe;
@@ -22,16 +21,13 @@ import static org.KaiFlo.SolarCell.Helpers.ComponentHelper.getComponentOfType;
 public class BatteryStorageTicking implements ITickingSystem {
 
     @Override
-    public void accept(Ref<ChunkStore> blockRef, List<Component<ChunkStore>> foundComponents, Archetype<ChunkStore> archetype, Vector3i globalPosition, BlockComponentChunk blockComponentChunk, CommandBuffer<ChunkStore> commandBuffer, World world, Set<Ref<ChunkStore>> blockRefs) {
+    public void accept(Ref<ChunkStore> blockRef, List<Component<ChunkStore>> foundComponents, Archetype<ChunkStore> archetype, Vector3i globalPosition, BlockComponentChunk blockComponentChunk, CommandBuffer<ChunkStore> commandBuffer, World world) {
         var energyStorage = getComponentOfType(foundComponents, EnergyStorageComponent.class).orElse(null);
         if (energyStorage == null) return;
         var energySourceComponent = getComponentOfType(foundComponents, EnergySourceComponent.class).orElse(null);
         if (energySourceComponent != null) return;
         executeForCubeAroundChunkSafe(globalPosition.x, globalPosition.y, globalPosition.z, 5, false, world, commandBuffer,
-            (x, y, z, targetRef, blockCompChunk, targetChunk) -> {
-//                if (blockRefs.contains(targetRef)) {
-//                    return;
-//                }
+            (x, y, z, targetRef, _, _) -> {
                 if (energyStorage.getCurrentEnergyAmount() >= energyStorage.getMaxCapacity()) {
                     return;
                 }
@@ -63,8 +59,6 @@ public class BatteryStorageTicking implements ITickingSystem {
 
             }
         );
-
-//        blockRefs.add(blockRef);
     }
 
     private static void transmitEnergy( EnergyStorageComponent energyStorage, EnergyStorageComponent targetEnergyStorage,long extractTarget, Vector3i globalPosition, int x, int y, int z) {

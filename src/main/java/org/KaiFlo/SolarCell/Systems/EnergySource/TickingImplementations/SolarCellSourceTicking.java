@@ -13,7 +13,6 @@ import org.KaiFlo.SolarCell.Components.EnergyStorage.Implementations.EnergyStora
 import org.KaiFlo.SolarCell.Systems.ITickingSystem;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.KaiFlo.SolarCell.Helpers.BlockHelper.HyLogger;
 import static org.KaiFlo.SolarCell.Helpers.ComponentHelper.getComponentOfType;
@@ -21,7 +20,7 @@ import static org.KaiFlo.SolarCell.Helpers.ComponentHelper.getComponentOfType;
 public class SolarCellSourceTicking implements ITickingSystem {
 
     @Override
-    public void accept(Ref<ChunkStore> blockRef, List<Component<ChunkStore>> foundComponents, Archetype<ChunkStore> archetype, Vector3i globalPosition, BlockComponentChunk blockComponentChunk, CommandBuffer<ChunkStore> commandBuffer, World world, Set<Ref<ChunkStore>> blockRefs) {
+    public void accept(Ref<ChunkStore> blockRef, List<Component<ChunkStore>> foundComponents, Archetype<ChunkStore> archetype, Vector3i globalPosition, BlockComponentChunk blockComponentChunk, CommandBuffer<ChunkStore> commandBuffer, World world) {
         var energyStorage = getComponentOfType(foundComponents, EnergyStorageComponent.class).orElse(null);
         if (energyStorage == null) return;
         var energySource = getComponentOfType(foundComponents, EnergySourceComponent.class).orElse(null);

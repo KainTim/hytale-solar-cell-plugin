@@ -46,20 +46,8 @@ public class ExampleCommand extends CommandBase {
             var size = sizeArg.get(ctx);
             if (size == null) size = 5;
             BlockHelper.executeForCubeAround(playerPosition.x, playerPosition.y, playerPosition.z, size,true, (x, y, z) -> {
-//                BlockType blockType = defaultWorld.getBlockType(x, y, z);
-//                if (blockType != null) {
-//                    LOGGER.atInfo().log(blockType.getId() + " at " + x + "," + y + "," + z);
-//                }
                 defaultWorld.breakBlock(x, y, z, 0);
             });
-//            chunkIndexes.forEach(chunkIndex -> {
-//                if (blockType == null) {
-//                    LOGGER.atInfo().log("No blocktype found for chunk index: " + chunkIndex);
-//                    return;
-//                }
-//                String id = blockType.getId();
-//                LOGGER.atInfo().log("Block ID: " + id);
-//            });
         });
     }
 

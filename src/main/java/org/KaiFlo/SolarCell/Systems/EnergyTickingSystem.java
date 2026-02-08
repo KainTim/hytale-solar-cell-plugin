@@ -6,36 +6,24 @@ import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.protocol.Vector3i;
 import com.hypixel.hytale.server.core.asset.type.blocktick.BlockTickStrategy;
-import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.BlockSection;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.ChunkSection;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
-import org.KaiFlo.SolarCell.Helpers.BlockHelper;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.KaiFlo.SolarCell.Helpers.BlockHelper.HyLogger;
-
 public class EnergyTickingSystem extends EntityTickingSystem<ChunkStore> {
 
-    private final Map<List<ComponentType<ChunkStore, ?>>, Map.Entry<ITickingSystem,Set<Ref<ChunkStore>>>> componentsToTickingSystem = new HashMap<>();
-    private long lastTime = 0L;
+    private final Map<List<ComponentType<ChunkStore, ?>>, ITickingSystem> componentsToTickingSystem = new HashMap<>();
 
 
     @Override
     public void tick(float v, int archetypeIndex, @NonNullDecl ArchetypeChunk<ChunkStore> archetypeChunk, @NonNullDecl Store<ChunkStore> store, @NonNullDecl CommandBuffer<ChunkStore> commandBuffer) {
-        var currentTime = System.nanoTime();
-//        HyLogger.atInfo().log("V:"+v);
-        if ((currentTime/1_000_000_000.0)-0.1> lastTime/1_000_000_000.0){
-//            HyLogger.atInfo().log("Reset, currentTime: "+currentTime/1_000_000_000.0+", lastTime: "+lastTime/1_000_000_000.0);
-            lastTime = currentTime;
-            componentsToTickingSystem.forEach((_, iTickingSystemSetEntry) -> iTickingSystemSetEntry.getValue().clear());
-        }
         var blockSection = archetypeChunk.getComponent(archetypeIndex, BlockSection.getComponentType());
         if (blockSection == null) return;
 
@@ -52,15 +40,12 @@ public class EnergyTickingSystem extends EntityTickingSystem<ChunkStore> {
         blockSection.forEachTicking(null, null, chunkSection.getY(), (_, _, localX, localY, localZ, _) -> {
             var blockRef = blockComponentChunk.getEntityReference(ChunkUtil.indexBlockInColumn(localX, localY, localZ));
             if (blockRef == null) {
-
-//                HyLogger.atInfo().log("Ignored block at "+localX+", "+localY+", "+localZ);
-                return BlockTickStrategy.CONTINUE;
+                return BlockTickStrategy.IGNORED;
             }
 
             int globalX = localX + (worldChunk.getX() * 32);
             int globalZ = localZ + (worldChunk.getZ() * 32);
             var globalPosition = new Vector3i(globalX, localY, globalZ);
-
 
             var archetype = commandBuffer.getArchetype(blockRef);
 
@@ -76,13 +61,11 @@ public class EnergyTickingSystem extends EntityTickingSystem<ChunkStore> {
             AtomicBoolean hasAny = new AtomicBoolean(false);
             entrySet.stream()
                 .filter(entry -> foundComponentTypes.containsAll(entry.getKey())).map(Map.Entry::getValue)
-                .forEach(entry -> {
+                .forEach(tickingSystem -> {
                     hasAny.set(true);
-                    entry.getKey().accept(blockRef,foundComponents, archetype, globalPosition, blockComponentChunk, commandBuffer, worldChunk.getWorld(),entry.getValue());
+                    tickingSystem.accept(blockRef, foundComponents, archetype, globalPosition, blockComponentChunk, commandBuffer, worldChunk.getWorld());
                 });
-
-//            HyLogger.atInfo().log("Continued block at "+localX+", "+localY+", "+localZ);
-            return BlockTickStrategy.CONTINUE;
+            return hasAny.get() ? BlockTickStrategy.CONTINUE : BlockTickStrategy.IGNORED;
         });
 
     }
@@ -94,7 +77,7 @@ public class EnergyTickingSystem extends EntityTickingSystem<ChunkStore> {
     }
 
     public EnergyTickingSystem withTickingSystemForComponentTypes(List<ComponentType<ChunkStore, ?>> componentTypes, ITickingSystem tickingSystem) {
-        componentsToTickingSystem.put(componentTypes, Map.entry(tickingSystem, new HashSet<>()));
+        componentsToTickingSystem.put(componentTypes, tickingSystem);
         return this;
     }
 }

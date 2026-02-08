@@ -9,13 +9,11 @@ import org.KaiFlo.SolarCell.Components.EnergyStorage.Implementations.EnergyStora
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-import static org.KaiFlo.SolarCell.Helpers.BlockHelper.HyLogger;
 import static org.KaiFlo.SolarCell.Helpers.BlockHelper.setBlockRefTicking;
 
 public class EnergyStorageInitializerSystem extends RefSystem<ChunkStore> {
     @Override
     public void onEntityAdded(@NonNullDecl Ref<ChunkStore> ref, @NonNullDecl AddReason addReason, @NonNullDecl Store<ChunkStore> store, @NonNullDecl CommandBuffer<ChunkStore> commandBuffer) {
-        HyLogger.atInfo().log("onEntityAdded");
         setBlockRefTicking(ref, commandBuffer);
     }
 
