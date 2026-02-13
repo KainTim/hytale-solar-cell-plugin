@@ -9,6 +9,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
+import org.KaiFlo.SolarCell.Enums.BlockRotation;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.*;
@@ -32,6 +33,61 @@ public class BlockHelper {
             }
         }
     }
+
+    public static void executeForDirection(
+            int centerX, int centerY, int centerZ,
+            World world,
+            CommandBuffer<ChunkStore> commandBuffer,
+            BlockRotation direction,
+            ChunkSafeCallback chunkSafeCallback){
+        Map<Long, List<BlockPos>> positionsByChunk = new HashMap<>();
+        addBlockInDirectionToPositions(centerX, centerY, centerZ, direction, positionsByChunk);
+        addBlockDownwardToPositions(centerX, centerY, centerZ, positionsByChunk);
+
+        executeChunkSafeCallbackForPositions(world, commandBuffer, chunkSafeCallback, positionsByChunk);
+    }
+
+    private static void addBlockInDirectionToPositions(
+            int centerX, int centerY, int centerZ, BlockRotation direction, Map<Long, List<BlockPos>> positionsByChunk) {
+
+        int xPos = centerX;
+        int zPos = centerZ;
+
+        if(direction == BlockRotation.NORTH || direction == BlockRotation.SOUTH){
+            zPos += direction == BlockRotation.SOUTH ? 1 : -1;
+        }else{
+            xPos += direction == BlockRotation.EAST ? 1 : -1;
+        }
+
+        int chunkX = Math.floorDiv(xPos, 32);
+        int chunkZ = Math.floorDiv(zPos, 32);
+        long chunkIndex = ChunkUtil.indexChunk(chunkX, chunkZ);
+
+        int localX = Math.floorMod(xPos, 32);
+        int localZ = Math.floorMod(zPos, 32);
+
+        positionsByChunk
+                .computeIfAbsent(chunkIndex, _ -> new ArrayList<>())
+                .add(new BlockPos(xPos, centerY, zPos, localX, localZ));
+    }
+
+    private static void addBlockDownwardToPositions(
+            int centerX, int centerY, int centerZ, Map<Long, List<BlockPos>> positionsByChunk) {
+
+        int yPos = centerY - 1;
+
+        int chunkX = Math.floorDiv(centerX, 32);
+        int chunkZ = Math.floorDiv(centerZ, 32);
+        long chunkIndex = ChunkUtil.indexChunk(chunkX, chunkZ);
+
+        int localX = Math.floorMod(centerX, 32);
+        int localZ = Math.floorMod(centerZ, 32);
+
+        positionsByChunk
+                .computeIfAbsent(chunkIndex, _ -> new ArrayList<>())
+                .add(new BlockPos(centerX, yPos, centerZ, localX, localZ));
+    }
+
 
     public static void executeForCubeAroundChunkSafe(
         int centerX, int centerY, int centerZ,
@@ -69,40 +125,43 @@ public class BlockHelper {
                 }
             }
         }
+        executeChunkSafeCallbackForPositions(world, commandBuffer, chunkSafeCallback, positionsByChunk);
+    }
+
+    private static void executeChunkSafeCallbackForPositions(World world, CommandBuffer<ChunkStore> commandBuffer, ChunkSafeCallback chunkSafeCallback, Map<Long, List<BlockPos>> positionsByChunk) {
         world.execute(() -> {
             for (var entry : positionsByChunk.entrySet()) {
-                long chunkIndex = entry.getKey();
+                long chunkIndexCI = entry.getKey();
                 List<BlockPos> blockPositions = entry.getValue();
 
-                WorldChunk chunk = world.getChunkIfLoaded(chunkIndex);
-                if (chunk == null) continue;
+                WorldChunk worldChunk = world.getChunkIfLoaded(chunkIndexCI);
+                if (worldChunk == null) continue;
 
                 var blockComponentChunk = commandBuffer.getComponent(
-                    chunk.getReference(),
-                    BlockComponentChunk.getComponentType()
+                        worldChunk.getReference(),
+                        BlockComponentChunk.getComponentType()
                 );
                 if (blockComponentChunk == null) continue;
 
                 for (BlockPos pos : blockPositions) {
                     int index = ChunkUtil.indexBlockInColumn(
-                        pos.localX(), pos.y(), pos.localZ()
+                            pos.localX(), pos.y(), pos.localZ()
                     );
 
                     var targetRef = blockComponentChunk.getEntityReference(index);
                     if (targetRef == null) continue;
 
                     chunkSafeCallback.accept(
-                        pos.x(), pos.y(), pos.z(),
-                        targetRef,
-                        blockComponentChunk,
-                        chunk
+                            pos.x(), pos.y(), pos.z(),
+                            targetRef,
+                            blockComponentChunk,
+                            worldChunk
                     );
                 }
             }
         });
-
-
     }
+
     record BlockPos(int x, int y, int z, int localX, int localZ) {}
     public interface Callback {
         void accept(int x, int y, int z);

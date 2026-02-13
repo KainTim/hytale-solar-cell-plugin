@@ -20,7 +20,7 @@
       "Components": {
         "EnergyStorage": {
           "MaxCapacity": 10000,
-          "ExtractEnergyPerTick": 1000,
+          "ExtractEnergyPerTick": 500,
           "ReceiveEnergyPerTick": 1000,
           "CurrentEnergyAmount": 100
         }
