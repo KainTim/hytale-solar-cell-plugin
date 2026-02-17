@@ -6,7 +6,7 @@ A minimal, ready-to-use template for creating Hytale plugins with modern build t
 
 ## Features
 
-✅ **Modern Build System** - Gradle with Kotlin DSL  
+✅ **Modern Build System** - Gradle with Groovy DSL  
 ✅ **Automated Testing** - Custom Gradle plugin for one-command server testing  
 ✅ **Java 25** - Latest Java features  
 ✅ **ShadowJar** - Automatic dependency bundling  
@@ -51,9 +51,9 @@ Your plugin JAR will be in: `build/libs/TemplatePlugin-1.0.0.jar`
 
 When ready to customize, edit these files:
 
-**`settings.gradle.kts`:**
+**`settings.gradle`:**
 
-```kotlin
+```groovy
 rootProject.name = "your-plugin-name"
 ```
 
@@ -139,9 +139,9 @@ TemplatePlugin/
 │   └── resources/
 │       └── manifest.json            # Plugin metadata
 ├── .gitignore                       # Git ignore rules
-├── build.gradle.kts                 # Build configuration
+├── build.gradle                     # Build configuration
 ├── gradle.properties                # Project properties
-├── settings.gradle.kts              # Project settings
+├── settings.gradle                  # Project settings
 ├── LICENSE                          # MIT License
 └── README.md                        # This file
 ```
@@ -200,9 +200,9 @@ rm -rf run/
 
 ### Adding Dependencies
 
-Edit `build.gradle.kts`:
+Edit `build.gradle`:
 
-```kotlin
+```groovy
 dependencies {
     // Hytale API (provided by server)
     compileOnly(files("./HytaleServer.jar"))
@@ -221,9 +221,9 @@ dependencies {
 
 **Usage:**
 
-Edit `build.gradle.kts`:
+Edit `build.gradle`:
 
-```kotlin
+```groovy
 runHytale {
     jarUrl = "url to hytale server jar"
 }
@@ -322,7 +322,7 @@ GitHub Actions will automatically build and create a release with your plugin JA
 
 ### Server Won't Start
 
-1. Check that `jarUrl` in `build.gradle.kts` is correct
+1. Check that `jarUrl` in `build.gradle` is correct
 2. Verify Java 25 is installed: `java -version`
 3. Check logs in `run/logs/`
 

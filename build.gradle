@@ -121,6 +121,33 @@ if (hasHytaleHome) {
         return programParameters
     }
 
+    def serverJar = file("$hytaleHome/install/$patchline/package/game/latest/Server/HytaleServer.jar")
+    def assetsZip = file("$hytaleHome/install/$patchline/package/game/latest/Assets.zip")
+    def shadowJarTask = tasks.named('shadowJar')
+
+    tasks.register('runServerJar', JavaExec) {
+        dependsOn shadowJarTask
+        mainClass = 'com.hypixel.hytale.Main'
+        classpath = files(serverJar)
+        workingDir = serverRunDir.absolutePath
+        doFirst {
+            def modPaths = [shadowJarTask.get().archiveFile.get().asFile.absolutePath]
+            if (load_user_mods.toBoolean()) {
+                modPaths << "${hytaleHome}/UserData/Mods"
+            }
+            setArgs([
+                    '--allow-op',
+                    '--disable-sentry',
+                    "--assets=${assetsZip}",
+                    "--mods=${modPaths.join(',')}"
+            ])
+        }
+    }
+
+    tasks.register('runServer') {
+        dependsOn 'runServerJar'
+    }
+
     // Creates a run configuration in IDEA that will run the Hytale server with
     // your plugin and the default assets.
     idea.project.settings.runConfigurations {

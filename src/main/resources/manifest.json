@@ -1,7 +1,7 @@
 {
     "Group": "Example",
     "Name": "ExamplePlugin",
-    "Version": "0.0.2",
+    "Version": "0.0.3",
     "Description": "An example plugin for HyTale!",
     "Authors": [
         {
@@ -9,7 +9,7 @@
         }
     ],
     "Website": "example.org",
-    "ServerVersion": "*",
+    "ServerVersion": "2026.02.17-255364b8e",
     "Dependencies": {
         
     },
