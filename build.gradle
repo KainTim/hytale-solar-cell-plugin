@@ -9,8 +9,9 @@ import org.gradle.internal.os.OperatingSystem
 ext {
     if (project.hasProperty('hytale_home')) {
         hytaleHome = project.findProperty('hytale_home')
-    }
-    else {
+    } else if (System.getenv('HYTALE_HOME')) {
+        hytaleHome = System.getenv('HYTALE_HOME')
+    } else {
         def os = OperatingSystem.current()
         if (os.isWindows()) {
             hytaleHome = "${System.getProperty("user.home")}/AppData/Roaming/Hytale"
@@ -27,8 +28,8 @@ ext {
     }
 }
 
-def hytaleHomePath = project.findProperty('hytaleHome')
-def hasHytaleHome = hytaleHomePath && file(hytaleHomePath).exists()
+def hytaleHomePath = ext.has('hytaleHome') ? hytaleHome : null
+def hasHytaleHome = (hytaleHomePath != null) && file(hytaleHomePath).exists()
 if (!hasHytaleHome) {
     logger.lifecycle("Hytale install not detected; run configs that launch the server will be skipped. Set -Phytale_home=/path/to/Hytale to enable them.")
 }
